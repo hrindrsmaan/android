@@ -1,15 +1,21 @@
 package com.tinder.screenshots;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,16 +24,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     GridLayoutManager mGridLayoutManager;
 
+    DatabaseReference mFirebaseRef;
 
-
-    private void setupWidgets()
-    {
-        Log.d(TAG, "setupWidgets: ");
-
-        mRecyclerView = findViewById(R.id.recycler_view);
-        mGridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
-        mGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-    }//setupWidgets
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +34,79 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: ");
 
-        setupWidgets();
-
-        mRecyclerView.setLayoutManager(mGridLayoutManager);
-
-        ArrayList personNames = new ArrayList<>(Arrays.asList("Person 1", "Person 2", "Person 3", "Person 4", "Person 5", "Person 6", "Person 7","Person 8", "Person 9", "Person 10", "Person 11", "Person 12", "Person 13", "Person 14"));
-        ArrayList personImages = new ArrayList<>(Arrays.asList(R.drawable.person1, R.drawable.person2, R.drawable.person3, R.drawable.person4, R.drawable.person5, R.drawable.person6, R.drawable.person7,R.drawable.person1, R.drawable.person2, R.drawable.person3, R.drawable.person4, R.drawable.person5, R.drawable.person6, R.drawable.person7));
-
-        CustomAdapter customAdapter = new CustomAdapter(MainActivity.this, personNames, personImages);
-        mRecyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
+        //pushDataToDB();
 
     }//onCreate
-}
+
+
+    private void pushDataToDB()
+    {
+        Log.d(TAG, "pushDataToDB: ");
+
+        ArrayList<String> urls = new ArrayList<>();
+
+
+
+
+        mFirebaseRef = FirebaseDatabase.getInstance().getReference().child("screen-shots");
+
+        for( String url: urls)
+        {
+            mFirebaseRef.push().setValue(url);
+        }//for
+
+
+
+
+
+    }//pushDataToDB
+
+    private void readData()
+    {
+        Log.d(TAG, "readData: ");
+
+        final ArrayList<String> urls = new ArrayList<>();
+
+        DatabaseReference mFirebaseDBref;
+        mFirebaseDBref = FirebaseDatabase.getInstance().getReference().child("screen-shots");
+        mFirebaseDBref.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                Log.d(TAG, "onDataChange: ");
+
+                for(DataSnapshot snapshot: dataSnapshot.getChildren())
+                {
+                    Log.d(TAG, "onDataChange: URL: "+snapshot.getValue());
+
+                    urls.add(String.valueOf(snapshot.getValue()));
+
+                }//for
+
+                Log.d(TAG, "onDataChange: URLs: "+ urls);
+
+                mRecyclerView = findViewById(R.id.recycler_view);
+
+                mGridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
+                mRecyclerView.setLayoutManager(mGridLayoutManager);
+                mGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+                CustomAdapter customAdapter = new CustomAdapter(MainActivity.this, urls);
+                mRecyclerView.setAdapter(customAdapter);
+            }//onDataChange
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }//onCancelled
+        });
+    }//readData()
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+        readData();
+    }
+}//main

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "556931125193",
+    "firebase_url": "https://tinder-screenshots.firebaseio.com",
+    "project_id": "tinder-screenshots",
+    "storage_bucket": "tinder-screenshots.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556931125193:android:1815f6d180fcf29894a218",
+        "android_client_info": {
+          "package_name": "com.tinder.screenshots"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556931125193-2gt0vhma9dkj1hrcsqap49f4r9rmk1mo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD46nIkxcO-uClXOjeSAZWwyNuMNAw72oI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "556931125193-2gt0vhma9dkj1hrcsqap49f4r9rmk1mo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

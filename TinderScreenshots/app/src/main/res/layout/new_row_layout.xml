@@ -2,30 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:padding="2dp">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    <LinearLayout-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content">-->
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:scaleType="centerCrop"
-            android:background="#2d2d2d"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/image"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="160dp"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            />-->
 
-        <TextView
-            android:id="@+id/name"
-            android:textColor="#2d2d2d"
-            android:textSize="13sp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Book Title"/>
+<!--    </LinearLayout>-->
 
-    </LinearLayout>
+    <include layout="@layout/cardview_item" />
 
 </RelativeLayout>
